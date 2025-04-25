@@ -45,14 +45,23 @@
               new { @id = "productDropdown", @class = "form-select", disabled = "disabled" })
         </div>
 
-        <label for="productNameTextbox" class="form-label">Value:</label>
-        <input type="text" id="productNameTextbox" class="form-control" placeholder="Only numbers are allowed" />
+    </div>
+
+    <div class="col-md-4">
+        <div>
+            <label for="productNameTextbox" class="form-label">Value:</label>
+            <input type="text" id="productNameTextbox" class="form-control" placeholder="Only numbers are allowed" />
+            <label for="productNameTextbox" class="form-label">Serial:</label>
+            <input type="text" id="productSerialTextbox" class="form-control" placeholder="Only numbers are allowed" />
+        </div>
+
         <div class="mb-3 d-grid gap-2" style="padding-top: 25px;">
             <input type="button" id="addProductButton" value="Add" class="btn btn-primary" />
         </div>
     </div>
-    <div class="col-md-4">
-    </div>
+
+
+
 
     <div class="col-md-4">
         <div style="max-height: 300px; overflow-y: auto;">
@@ -89,21 +98,26 @@
         // CONTROL TEXTBOX INPUT
         // ----------------------------------------------------------------------
 
-        var input = document.getElementById("productNameTextbox");
-        var warning = document.querySelector("#productNameTextbox + small");
-
-        input.addEventListener("input", function () {
-            var value = this.value.replace(/\D/g, '');
+        $("#productNameTextbox").on("input", function () {
+            let value = this.value.replace(/\D/g, '');
             if (value.length > 6) {
                 value = value.slice(0, 6);
             }
             this.value = value;
 
-            if (value.length !== this.value.length) {
-                warning.style.display = "block";
+            if (value.length > 0) {
+                $("#productSerialTextbox").prop("disabled", false);
             } else {
-                warning.style.display = "none";
+                $("#productSerialTextbox").val("").prop("disabled", true);
             }
+        });
+
+        $("#productSerialTextbox").on("input", function () {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 10) {
+                value = value.slice(0, 10);
+            }
+            this.value = value;
         });
 
         // ----------------------------------------------------------------------
@@ -113,6 +127,7 @@
         $(function DropDownPopulater() {
 
         $("#productNameTextbox").prop("disabled", true);
+        $("#productSerialTextbox").prop("disabled", true);
 
         $("#supplierDropdown").change(function () {
             var supplierId = $(this).val();
