@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <h2>INF272 Practical Activity 06</h2>
+
+    <table class="table table-bordered">
+        <tr>
+            <td style="width: 200px;">
+                <img src="~/Content/Images/student-photo.jpg" alt="Student Photo" style="max-width: 180px;" />
+            </td>
+            <td>
+                <h3>Student Details</h3>
+                <p><strong>Name:</strong> [Your Name]</p>
+                <p><strong>Surname:</strong> [Your Surname]</p>
+                <p><strong>Student Number:</strong> [Your Student Number]</p>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Implementation Steps</h3>
+    <ol>
+        <li>Downloaded and unzipped the Session 09 sample project</li>
+        <li>Added student details to Home/Index view</li>
+        <li>Created new Supplier model with ID and Name properties</li>
+        <li>Updated ProductViewModel to include Supplier references</li>
+        <li>
+            Modified ProductRepository to include:
+            <ul>
+                <li>3 Suppliers</li>
+                <li>9 Categories (3 per supplier)</li>
+                <li>16 Products (distributed across categories)</li>
+            </ul>
+        </li>
+        <li>
+            Updated Product/Index view to include:
+            <ul>
+                <li>New Supplier dropdown</li>
+                <li>New Serial textbox (numeric, 10 digits)</li>
+                <li>Two-column layout for form controls</li>
+            </ul>
+        </li>
+        <li>Implemented sequential activation of form controls</li>
+        <li>
+            Updated jQuery for CRUD operations to:
+            <ul>
+                <li>Handle new Supplier dropdown</li>
+                <li>Process Serial textbox input</li>
+                <li>Target specific row IDs</li>
+            </ul>
+        </li>
+        <li>Modified Edit/Save functionality to update both Value and Serial fields</li>
+        <li>Ensured Delete removes entire row</li>
+    </ol>
+</div>
