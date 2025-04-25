@@ -11,11 +11,32 @@ namespace ProductList.Controllers
             {
             var viewModel = new ProductViewModel
                 {
+                Suppliers = ProductRepository.GetSuppliers(),
                 Categories = ProductRepository.GetCategories(),
                 Products = ProductRepository.GetProducts(),
                 };
             return View(viewModel);
             }
+
+        public ActionResult GetCategoriesBySupplier(int supplierId)
+        {
+            var categories = ProductRepository.GetCategories()
+                .Where(p => p.SupplierId == supplierId)
+                .Select(p => new { p.Id, p.Name });
+
+            var categoryNames = new List<string>();
+            var categoryIds = new List<int>();
+            foreach (var category in categories)
+            {
+                categoryNames.Add(category.Name);
+                categoryIds.Add(category.Id);
+            }
+
+            return Content(
+                string.Format("{0};{1}", string.Join(",", categoryNames), string.Join(",", categoryIds)),
+                "text/plain"
+            );
+        }
 
         public ActionResult GetProductsByCategory(int categoryId)
             {

@@ -22,19 +22,27 @@
 <div class="row">
     <div class="col-md-4">
         <div class="mb-3">
+            <label for="supplierDropdown" class="form-label">Supplier:</label>
+            @Html.DropDownListFor(model => model.SelectedSupplierId,
+              new SelectList(Model.Suppliers, "Id", "Name"),
+              "Select a supplier",
+              new { @id = "supplierDropdown", @class = "form-select" })
+        </div>
+
+        <div class="mb-3">
             <label for="categoryDropdown" class="form-label">Category:</label>
             @Html.DropDownListFor(model => model.SelectedCategoryId,
-              new SelectList(Model.Categories, "Id", "Name"),
-              "Select a category",
-              new { @id = "categoryDropdown", @class = "form-select" })
+              Enumerable.Empty<SelectListItem>(),
+              "Select a product",
+              new { @id = "productDropdown", @class = "form-select", disabled = "disabled" })
         </div>
 
         <div class="mb-3">
             <label for="productDropdown" class="form-label">Product:</label>
             @Html.DropDownListFor(model => model.SelectedProductId,
               Enumerable.Empty<SelectListItem>(),
-              "Select a product",
-              new { @id = "productDropdown", @class = "form-select", disabled = "disabled" })
+              "Select a category",
+              new { @id = "categoryDropdown", @class = "form-select", disabled = "disabled" })
         </div>
 
         <label for="productNameTextbox" class="form-label">Value:</label>
@@ -106,6 +114,32 @@
 
         $("#productNameTextbox").prop("disabled", true);
 
+        $("#supplierDropdown").change(function () {
+            var supplierId = $(this).val();
+            if (supplierId) {
+                $.get('@Url.Action("GetCategoriesBySupplier", "Category")', { supplierId: supplierId })
+                    .done(function (data) {
+                        var categoryNames = data.split(";")[0].split(",");
+                        var categoryIds = data.split(";")[1].split(",");
+                        var categories = [];
+                        for (var i = 0; i < categoryNames.length; i++) {
+                            categories.push({ id: categoryIds[i], name: categoryNames[i] });
+                        }
+
+                        var categoryDropdown = $("#categoryDropdown");
+                        categoryDropdown.empty();
+                        categoryDropdown.append($("<option></option>").val("").text("Select a product"));
+                        $.each(categories, function (i, category) {
+                            categoryDropdown.append($("<option></option>").val(category.id).text(category.name));
+                        });
+                        categoryDropdown.prop("disabled", false);
+                    });
+            } else {
+                $("#categoryDropdown").empty().append($("<option></option>").val("").text("Select a product")).prop("disabled", true);
+                $("#categoryNameTextbox").prop("disabled", true);
+            }
+        });
+
         $("#categoryDropdown").change(function () {
             var categoryId = $(this).val();
             if (categoryId) {
@@ -129,6 +163,15 @@
             } else {
                 $("#productDropdown").empty().append($("<option></option>").val("").text("Select a product")).prop("disabled", true);
                 $("#productNameTextbox").prop("disabled", true);
+            }
+        });
+
+        $("#categoryDropdown").change(function () {
+            $("#addCategorySection").show();
+            if ($("#supplierDropdown").val() && $("#categoryDropdown").val()) {
+                $("#categoryNameTextbox").prop("disabled", false);
+            } else {
+                $("#categoryNameTextbox").prop("disabled", true);
             }
         });
 
