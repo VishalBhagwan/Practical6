@@ -33,16 +33,16 @@
             <label for="categoryDropdown" class="form-label">Category:</label>
             @Html.DropDownListFor(model => model.SelectedCategoryId,
               Enumerable.Empty<SelectListItem>(),
-              "Select a product",
-              new { @id = "productDropdown", @class = "form-select", disabled = "disabled" })
+              "Select a category",
+              new { @id = "categoryDropdown", @class = "form-select", disabled = "disabled" })
         </div>
 
         <div class="mb-3">
             <label for="productDropdown" class="form-label">Product:</label>
             @Html.DropDownListFor(model => model.SelectedProductId,
               Enumerable.Empty<SelectListItem>(),
-              "Select a category",
-              new { @id = "categoryDropdown", @class = "form-select", disabled = "disabled" })
+              "Select a product",
+              new { @id = "productDropdown", @class = "form-select", disabled = "disabled" })
         </div>
 
         <label for="productNameTextbox" class="form-label">Value:</label>
@@ -117,7 +117,7 @@
         $("#supplierDropdown").change(function () {
             var supplierId = $(this).val();
             if (supplierId) {
-                $.get('@Url.Action("GetCategoriesBySupplier", "Category")', { supplierId: supplierId })
+                $.get('@Url.Action("GetCategoriesBySupplier", "Product")', { supplierId: supplierId })
                     .done(function (data) {
                         var categoryNames = data.split(";")[0].split(",");
                         var categoryIds = data.split(";")[1].split(",");
