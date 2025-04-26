@@ -50,13 +50,13 @@
     <div class="col-md-4">
         <div>
             <label for="productNameTextbox" class="form-label">Value:</label>
-            <input type="text" id="productNameTextbox" class="form-control" placeholder="Only numbers are allowed" />
-            <label for="productNameTextbox" class="form-label">Serial:</label>
-            <input type="text" id="productSerialTextbox" class="form-control" placeholder="Only numbers are allowed" />
+            @Html.TextBoxFor(model => model.ProductValue, new { @id = "productNameTextbox", @class = "form-control", placeholder = "Only numbers are allowed", disabled = "disabled" })
+            <label for="productSerialTextbox" class="form-label">Serial:</label>
+            @Html.TextBoxFor(model => model.ProductSerial, new { @id = "productSerialTextbox", @class = "form-control", placeholder = "Only numbers are allowed", disabled = "disabled" })
         </div>
 
         <div class="mb-3 d-grid gap-2" style="padding-top: 25px;">
-            <input type="button" id="addProductButton" value="Add" class="btn btn-primary" />
+            <input type="button" id="addProductButton" value="Add" class="btn btn-primary" disabled/>
         </div>
     </div>
 
@@ -118,6 +118,12 @@
                 value = value.slice(0, 10);
             }
             this.value = value;
+
+            if (value.length > 0) {
+                $("#addProductButton").prop("disabled", false);
+            } else {
+                $("#addProductButton").val("").prop("disabled", true);
+            }
         });
 
         // ----------------------------------------------------------------------
@@ -269,6 +275,10 @@
                             alert("Failed to add product.");
                         }
                     });
+
+                    $("#addProductButton").prop("disabled", true);
+                    $("#productSerialTextbox").val("").prop("disabled", true);
+
                 }
 
         // ----------------------------------------------------------------------
